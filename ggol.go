@@ -38,7 +38,7 @@ func defaultNextUnitGenerator[T any](coord *Coordinate, unit *T, getAdjacentUnit
 	return unit
 }
 
-// Return a new Game with the given size and initalUnit.
+// Return a new Game with the given size and initial Unit.
 func NewGame[T any](
 	units *[][]T,
 ) (Game[T], error) {
@@ -170,7 +170,7 @@ func (g *gameInfo[T]) GetUnit(c *Coordinate) (*T, error) {
 func (g *gameInfo[T]) GetUnits() *[][]T {
 	g.locker.RLock()
 	defer g.locker.RUnlock()
-	return &(*g.units)
+	return g.units
 }
 
 // Get all units in the given area.
@@ -202,7 +202,7 @@ func (g *gameInfo[T]) GetUnitsInArea(area *Area) (*[][]T, error) {
 	return &unitsInArea, nil
 }
 
-// We will iterate all units in the game and call the callbacks with coordiante and unit.
+// We will iterate all units in the game and call the callbacks with coordinate and unit.
 func (g *gameInfo[T]) IterateUnits(callback UnitsIteratorCallback[T]) {
 	for x := 0; x < g.size.Width; x++ {
 		for y := 0; y < g.size.Height; y++ {
@@ -211,7 +211,7 @@ func (g *gameInfo[T]) IterateUnits(callback UnitsIteratorCallback[T]) {
 	}
 }
 
-// We will iterate all units in the given area and call the callbacks with coordiante and unit.
+// We will iterate all units in the given area and call the callbacks with coordinate and unit.
 func (g *gameInfo[T]) IterateUnitsInArea(area *Area, callback UnitsIteratorCallback[T]) error {
 	if g.isCoordinateInvalid(&area.From) {
 		return &ErrCoordinateIsInvalid{&area.From}

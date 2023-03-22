@@ -22,7 +22,7 @@ func generateInitialUnitMatrixForTest(width int, height int, unit unitForTest) *
 	return &unitMatrix
 }
 
-func defauUnitForTestIterator(coord *Coordinate, unit *unitForTest, getAdjacentUnit AdjacentUnitGetter[unitForTest]) *unitForTest {
+func defaultUnitForTestIterator(coord *Coordinate, unit *unitForTest, getAdjacentUnit AdjacentUnitGetter[unitForTest]) *unitForTest {
 	newUnit := *unit
 
 	var aliveAdjacentCellsCount int = 0

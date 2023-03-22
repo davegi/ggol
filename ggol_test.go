@@ -42,7 +42,7 @@ func shouldThrowErrorWhenCoordinateExceedsBoarder(t *testing.T) {
 	height := 2
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 	c := Coordinate{X: 0, Y: 10}
 	err := g.SetUnit(&c, &unitForTest{hasLiveCell: true})
 
@@ -58,7 +58,7 @@ func shouldSetUnitCorrectly(t *testing.T) {
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	c := Coordinate{X: 1, Y: 1}
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 	g.SetUnit(&c, &unitForTest{hasLiveCell: true})
 	unit, _ := g.GetUnit(&c)
 	newLiveStatus := unit.hasLiveCell
@@ -80,7 +80,7 @@ func testBlockPattern(t *testing.T) {
 	height := 3
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 
 	// Make a block pattern
 	g.SetUnit(&Coordinate{X: 0, Y: 0}, &unitForTest{hasLiveCell: true})
@@ -90,17 +90,17 @@ func testBlockPattern(t *testing.T) {
 
 	latestUnits := g.GenerateNextUnits()
 
-	nexthasLiveCellUnitsMap := *convertUnitForTestMatrixToUnitsHavingLiveCellForTest(latestUnits)
-	expectedNexthasLiveCellUnitsMap := unitsHavingLiveCellForTest{
+	nextHasLiveCellUnitsMap := *convertUnitForTestMatrixToUnitsHavingLiveCellForTest(latestUnits)
+	expectedNextHasLiveCellUnitsMap := unitsHavingLiveCellForTest{
 		{true, true, false},
 		{true, true, false},
 		{false, false, false},
 	}
 
-	if areTwoUnitsHavingLiveCellForTestEqual(nexthasLiveCellUnitsMap, expectedNexthasLiveCellUnitsMap) {
+	if areTwoUnitsHavingLiveCellForTestEqual(nextHasLiveCellUnitsMap, expectedNextHasLiveCellUnitsMap) {
 		t.Log("Passed")
 	} else {
-		t.Fatalf("Should generate next unitLiveMap of a block, but got %v.", nexthasLiveCellUnitsMap)
+		t.Fatalf("Should generate next unitLiveMap of a block, but got %v.", nextHasLiveCellUnitsMap)
 	}
 }
 
@@ -109,7 +109,7 @@ func testBlinkerPattern(t *testing.T) {
 	height := 3
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 
 	// Make a blinker pattern
 	g.SetUnit(&Coordinate{X: 1, Y: 0}, &unitForTest{hasLiveCell: true})
@@ -118,12 +118,12 @@ func testBlinkerPattern(t *testing.T) {
 
 	var unitLiveMap unitsHavingLiveCellForTest
 
-	expectedNexthasLiveCellUnitsMapOne := unitsHavingLiveCellForTest{
+	expectedNextHasLiveCellUnitsMapOne := unitsHavingLiveCellForTest{
 		{false, true, false},
 		{false, true, false},
 		{false, true, false},
 	}
-	expectedNexthasLiveCellUnitsMapTwo := unitsHavingLiveCellForTest{
+	expectedNextHasLiveCellUnitsMapTwo := unitsHavingLiveCellForTest{
 		{false, false, false},
 		{true, true, true},
 		{false, false, false},
@@ -131,13 +131,13 @@ func testBlinkerPattern(t *testing.T) {
 
 	latestUnits := g.GenerateNextUnits()
 	unitLiveMap = *convertUnitForTestMatrixToUnitsHavingLiveCellForTest(latestUnits)
-	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedNexthasLiveCellUnitsMapOne) {
+	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedNextHasLiveCellUnitsMapOne) {
 		t.Fatalf("Should generate next unitLiveMap of a blinker, but got %v.", unitLiveMap)
 	}
 
 	latestUnits = g.GenerateNextUnits()
 	unitLiveMap = *convertUnitForTestMatrixToUnitsHavingLiveCellForTest(latestUnits)
-	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedNexthasLiveCellUnitsMapTwo) {
+	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedNextHasLiveCellUnitsMapTwo) {
 		t.Fatalf("Should generate 2nd next unitLiveMap of a blinker, but got %v.", unitLiveMap)
 	}
 }
@@ -147,7 +147,7 @@ func testGliderPattern(t *testing.T) {
 	height := 5
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 
 	// Make a glider pattern
 	g.SetUnit(&Coordinate{X: 1, Y: 1}, &unitForTest{hasLiveCell: true})
@@ -158,28 +158,28 @@ func testGliderPattern(t *testing.T) {
 
 	var unitLiveMap unitsHavingLiveCellForTest
 
-	expectedhasLiveCellUnitsMapOne := unitsHavingLiveCellForTest{
+	expectedHasLiveCellUnitsMapOne := unitsHavingLiveCellForTest{
 		{false, false, false, false, false},
 		{false, false, false, true, false},
 		{false, true, false, true, false},
 		{false, false, true, true, false},
 		{false, false, false, false, false},
 	}
-	expectedhasLiveCellUnitsMapTwo := unitsHavingLiveCellForTest{
+	expectedHasLiveCellUnitsMapTwo := unitsHavingLiveCellForTest{
 		{false, false, false, false, false},
 		{false, false, true, false, false},
 		{false, false, false, true, true},
 		{false, false, true, true, false},
 		{false, false, false, false, false},
 	}
-	expectedhasLiveCellUnitsMapThree := unitsHavingLiveCellForTest{
+	expectedHasLiveCellUnitsMapThree := unitsHavingLiveCellForTest{
 		{false, false, false, false, false},
 		{false, false, false, true, false},
 		{false, false, false, false, true},
 		{false, false, true, true, true},
 		{false, false, false, false, false},
 	}
-	expectedhasLiveCellUnitsMapFour := unitsHavingLiveCellForTest{
+	expectedHasLiveCellUnitsMapFour := unitsHavingLiveCellForTest{
 		{false, false, false, false, false},
 		{false, false, false, false, false},
 		{false, false, true, false, true},
@@ -189,25 +189,25 @@ func testGliderPattern(t *testing.T) {
 
 	latestUnits := g.GenerateNextUnits()
 	unitLiveMap = *convertUnitForTestMatrixToUnitsHavingLiveCellForTest(latestUnits)
-	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedhasLiveCellUnitsMapOne) {
+	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedHasLiveCellUnitsMapOne) {
 		t.Fatalf("Should generate next unitLiveMap of a glider, but got %v.", unitLiveMap)
 	}
 
 	latestUnits = g.GenerateNextUnits()
 	unitLiveMap = *convertUnitForTestMatrixToUnitsHavingLiveCellForTest(latestUnits)
-	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedhasLiveCellUnitsMapTwo) {
+	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedHasLiveCellUnitsMapTwo) {
 		t.Fatalf("Should generate 2nd next unitLiveMap of a glider, but got %v.", unitLiveMap)
 	}
 
 	latestUnits = g.GenerateNextUnits()
 	unitLiveMap = *convertUnitForTestMatrixToUnitsHavingLiveCellForTest(latestUnits)
-	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedhasLiveCellUnitsMapThree) {
+	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedHasLiveCellUnitsMapThree) {
 		t.Fatalf("Should generate 3rd next next unitLiveMap of a glider, but got %v.", unitLiveMap)
 	}
 
 	latestUnits = g.GenerateNextUnits()
 	unitLiveMap = *convertUnitForTestMatrixToUnitsHavingLiveCellForTest(latestUnits)
-	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedhasLiveCellUnitsMapFour) {
+	if !areTwoUnitsHavingLiveCellForTestEqual(unitLiveMap, expectedHasLiveCellUnitsMapFour) {
 		t.Fatalf("Should generate 4th next next unitLiveMap of a glider, but got %v.", unitLiveMap)
 	}
 
@@ -219,7 +219,7 @@ func testGliderPatternWithConcurrency(t *testing.T) {
 	height := 200
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 
 	// Make a glider pattern
 	g.SetUnit(&Coordinate{X: 0, Y: 0}, &unitForTest{hasLiveCell: true})
@@ -235,7 +235,7 @@ func testGliderPatternWithConcurrency(t *testing.T) {
 
 	wg.Add(step)
 	for i := 0; i < step; i++ {
-		// Let the glider fly to digonal unit in four steps.
+		// Let the glider fly to diagonal unit in four steps.
 		go func() {
 			g.GenerateNextUnits()
 			g.GenerateNextUnits()
@@ -271,7 +271,7 @@ func testGetSizeCaseOne(t *testing.T) {
 	height := 6
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 
 	if g.GetSize().Width == 3 && g.GetSize().Height == 6 {
 		t.Log("Passed")
@@ -290,7 +290,7 @@ func testGetUnitCaseOne(t *testing.T) {
 	coord := Coordinate{X: 1, Y: 0}
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 	g.SetUnit(&coord, &unitForTest{hasLiveCell: true})
 	unit, _ := g.GetUnit(&coord)
 
@@ -306,7 +306,7 @@ func testGetUnitCaseTwo(t *testing.T) {
 	height := 2
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 	coord := Coordinate{X: 1, Y: 4}
 	_, err := g.GetUnit(&coord)
 
@@ -353,7 +353,7 @@ func testSetNextUnitGeneratorCaseOne(t *testing.T) {
 	if areTwoUnitsHavingLiveCellForTestEqual(*unitLiveMap, expectedBinaryBoard) {
 		t.Log("Passed")
 	} else {
-		t.Fatalf("Did not set custom 'shouldUnitDie' logic correcly.")
+		t.Fatalf("Did not set custom 'shouldUnitDie' logic correctly.")
 	}
 }
 
@@ -366,7 +366,7 @@ func testGetUnitsCaseOne(t *testing.T) {
 	height := 2
 	uniMatrix := generateInitialUnitMatrixForTest(width, height, initialUnitForTest)
 	g, _ := NewGame(uniMatrix)
-	g.SetNextUnitGenerator(defauUnitForTestIterator)
+	g.SetNextUnitGenerator(defaultUnitForTestIterator)
 
 	aliveUnitsMap := convertUnitForTestMatrixToUnitsHavingLiveCellForTest(g.GetUnits())
 

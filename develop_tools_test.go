@@ -32,10 +32,10 @@ func TestHasLiveCellTestUnitsMapsEqual(t *testing.T) {
 	testAreHasLiveCellTestUnitsMapsEqualCaseTwo(t)
 }
 
-func testConvertTestUnitsMatricToHasLiveCellTestUnitsMapCaseOne(t *testing.T) {
+func testConvertTestUnitsMatrixToHasLiveCellTestUnitsMapCaseOne(t *testing.T) {
 	uniMatrix := generateInitialUnitMatrixForTest(2, 2, unitForTest{hasLiveCell: true})
 	game, _ := NewGame(uniMatrix)
-	game.SetNextUnitGenerator(defauUnitForTestIterator)
+	game.SetNextUnitGenerator(defaultUnitForTestIterator)
 	allUnits := game.GetUnits()
 	fmt.Println(allUnits)
 	liveUnitsMap := convertUnitForTestMatrixToUnitsHavingLiveCellForTest(allUnits)
@@ -49,6 +49,6 @@ func testConvertTestUnitsMatricToHasLiveCellTestUnitsMapCaseOne(t *testing.T) {
 	}
 }
 
-func TestConvertTestUnitsMatricToHasLiveCellTestUnitsMap(t *testing.T) {
-	testConvertTestUnitsMatricToHasLiveCellTestUnitsMapCaseOne(t)
+func TestConvertTestUnitsMatrixToHasLiveCellTestUnitsMap(t *testing.T) {
+	testConvertTestUnitsMatrixToHasLiveCellTestUnitsMapCaseOne(t)
 }

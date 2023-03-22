@@ -8,7 +8,7 @@ type ErrUnitsIsInvalid struct {
 
 // Tell you that the size is invalid.
 func (e *ErrUnitsIsInvalid) Error() string {
-	return fmt.Sprintf("Given units is not valid, the cells in every row should be equal.")
+	return "Given units is not valid, the cells in every row should be equal."
 }
 
 // This error will be thrown when you're trying to set or get an unit with invalid coordinate.
@@ -27,10 +27,10 @@ type ErrAreaIsInvalid struct {
 }
 
 func (e *ErrAreaIsInvalid) Error() string {
-	return fmt.Sprintf("Area with from coordinate (%v, %v) and end coordiante (%v, %v) is not valid.", e.Area.From.X, e.Area.From.Y, e.Area.To.X, e.Area.To.Y)
+	return fmt.Sprintf("Area with from coordinate (%v, %v) and end coordinate (%v, %v) is not valid.", e.Area.From.X, e.Area.From.Y, e.Area.To.X, e.Area.To.Y)
 }
 
-// Coordniate tells you the position of an unit in the game.
+// Coordinate tells you the position of an unit in the game.
 type Coordinate struct {
 	X int
 	Y int
@@ -48,8 +48,8 @@ type Size struct {
 	Height int
 }
 
-// This function will be passed into NextUnitGenerator, this is how you can adajcent units in NextUnitGenerator.
-// Also, 2nd argument "isCrossBorder" tells you if the adjacent unit is on ohter side of the map.
+// This function will be passed into NextUnitGenerator, this is how you can adjacent units in NextUnitGenerator.
+// Also, 2nd argument "isCrossBorder" tells you if the adjacent unit is on other side of the map.
 type AdjacentUnitGetter[T any] func(originCoord *Coordinate, relativeCoord *Coordinate) (unit *T, isCrossBorder bool)
 
 // NextUnitGenerator tells the game how you're gonna generate next status of the given unit.
