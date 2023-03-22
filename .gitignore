@@ -1,4 +1,5 @@
 output
 .DS_Store
+example/output/*
 example/expected/*
 example/expected original/*

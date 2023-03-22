@@ -1,7 +1,19 @@
 package ggol
 
 import (
+	// "log"
 	"sync"
+
+	"github.com/mitchellh/go-testing-interface"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+)
+
+var (
+	ttt *testing.RuntimeT = &testing.RuntimeT{}
+	//lint:ignore U1000 - until it's used.
+	nt_assume *assert.Assertions  = assert.New(ttt)
+	nt_assert *require.Assertions = require.New(ttt)
 )
 
 // "T" in the Game interface represents the type of unit, it's defined by you.
@@ -30,6 +42,7 @@ type Game[T any] interface {
 type gameInfo[T any] struct {
 	size              *Size
 	units             *[][]T
+	nextUnits         [][]T
 	nextUnitGenerator NextUnitGenerator[T]
 	locker            sync.RWMutex
 }
@@ -50,9 +63,11 @@ func NewGame[T any](
 	newG := gameInfo[T]{
 		size,
 		units,
+		nil,
 		defaultNextUnitGenerator[T],
 		sync.RWMutex{},
 	}
+	newG.nextUnits = newG.allocate2dSlice()
 
 	return &newG, nil
 }
@@ -104,27 +119,36 @@ func (g *gameInfo[T]) getAdjacentUnit(
 	return &(*g.units)[targetX][targetY], isCrossBorder
 }
 
+func (g *gameInfo[T]) allocate2dSlice() [][]T {
+	nextUnits := make([][]T, g.size.Width)
+
+	for x := 0; x < g.size.Width; x++ {
+		nextUnits[x] = make([]T, g.size.Height)
+	}
+	return nextUnits
+}
+
+func (g *gameInfo[T]) copy2dSlice() {
+	for i := range g.nextUnits {
+		copy((*g.units)[i], g.nextUnits[i])
+	}
+	nt_assert.Equal(*g.units, g.nextUnits)
+}
+
 // Generate next units.
 func (g *gameInfo[T]) GenerateNextUnits() *[][]T {
 	g.locker.Lock()
 	defer g.locker.Unlock()
 
-	nextUnits := make([][]T, g.size.Width)
-
 	for x := 0; x < g.size.Width; x++ {
-		nextUnits[x] = make([]T, g.size.Height)
 		for y := 0; y < g.size.Height; y++ {
 			coord := Coordinate{X: x, Y: y}
 			nextUnit := g.nextUnitGenerator(&coord, &(*g.units)[x][y], g.getAdjacentUnit)
-			nextUnits[x][y] = *nextUnit
+			g.nextUnits[x][y] = *nextUnit
 		}
 	}
 
-	for x := 0; x < g.size.Width; x++ {
-		for y := 0; y < g.size.Height; y++ {
-			(*g.units)[x][y] = nextUnits[x][y]
-		}
-	}
+	g.copy2dSlice()
 
 	return g.units
 }
