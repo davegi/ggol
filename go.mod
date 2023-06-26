@@ -20,6 +20,14 @@ retract (
 require github.com/anthonyLock/testify v0.0.0-20230206122917-1fdbdc28f21b
 
 require (
+	github.com/josharian/impl v1.2.0 // indirect
+	golang.org/x/mod v0.9.0 // indirect
+	golang.org/x/sys v0.6.0 // indirect
+	golang.org/x/tools v0.7.0 // indirect
+	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
+)
+
+require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/mitchellh/go-testing-interface v1.14.1
 	github.com/pmezard/go-difflib v1.0.0 // indirect
